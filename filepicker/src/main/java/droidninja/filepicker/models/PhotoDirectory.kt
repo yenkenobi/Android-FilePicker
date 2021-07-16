@@ -26,8 +26,8 @@ class PhotoDirectory(
         this.coverPath = coverPath
     }
 
-    fun addPhoto(imageId: Long, fileName: String, path: Uri, mediaType: Int) {
-        medias.add(Media(imageId, fileName, path, mediaType))
+    fun addPhoto(imageId: Long, fileName: String, path: Uri, mediaType: Int, duration: Int?) {
+        medias.add(Media(imageId, fileName, path, mediaType, duration))
     }
 
     override fun equals(other: Any?): Boolean {

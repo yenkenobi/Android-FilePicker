@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
 class Media @JvmOverloads constructor(override var id: Long = 0,
                                       override var name: String,
                                       override var path: Uri,
-                                      var mediaType: Int = 0) : BaseFile(id, name, path)
+                                      var mediaType: Int = 0, val duration: Int? = null) : BaseFile(id, name, path)
 
 
 

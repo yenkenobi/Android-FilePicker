@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <droidninja.filepicker.views.SquareRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent">
 
     <ImageView
@@ -28,6 +29,17 @@
         android:layout_centerInParent="true"
         android:src="@drawable/ic_play_icon"
         />
+
+    <TextView
+        android:id="@+id/video_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:padding="2dp"
+        android:background="@color/transparent_black"
+        tools:text="0:52"
+        android:textColor="@android:color/white"/>
 
     <droidninja.filepicker.views.SmoothCheckBox
         android:id="@+id/checkbox"

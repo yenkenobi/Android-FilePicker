@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.ContentUris
 import android.database.ContentObserver
 import android.database.Cursor
+import android.media.MediaMetadataRetriever
 import android.provider.BaseColumns
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
@@ -19,6 +20,7 @@ import droidninja.filepicker.utils.registerObserver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
+
 
 class VMMediaPicker(application: Application) : BaseViewModel(application) {
 
@@ -147,6 +149,7 @@ class VMMediaPicker(application: Application) : BaseViewModel(application) {
             val name = data.getString(data.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME))
             val fileName = data.getString(data.getColumnIndexOrThrow(MediaStore.MediaColumns.TITLE))
             val mediaType = data.getInt(data.getColumnIndexOrThrow(MediaStore.Files.FileColumns.MEDIA_TYPE))
+            var duration: Int? = null
 
             val photoDirectory = PhotoDirectory()
             photoDirectory.id = imageId
@@ -162,14 +165,17 @@ class VMMediaPicker(application: Application) : BaseViewModel(application) {
                         MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
                         imageId
                 )
+                val retriever = MediaMetadataRetriever()
+                retriever.setDataSource(getApplication(), contentUri)
+                duration = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.toInt()
             }
             if (!directories.contains(photoDirectory)) {
-                photoDirectory.addPhoto(imageId, fileName, contentUri, mediaType)
+                photoDirectory.addPhoto(imageId, fileName, contentUri, mediaType, duration)
                 photoDirectory.dateAdded = data.getLong(data.getColumnIndexOrThrow(MediaStore.MediaColumns.DATE_ADDED))
                 directories.add(photoDirectory)
             } else {
                 directories[directories.indexOf(photoDirectory)]
-                        .addPhoto(imageId, fileName, contentUri, mediaType)
+                        .addPhoto(imageId, fileName, contentUri, mediaType, duration)
             }
         }
 

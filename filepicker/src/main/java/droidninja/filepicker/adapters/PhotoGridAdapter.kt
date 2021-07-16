@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ImageView
+import android.widget.TextView
 
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
@@ -21,6 +22,7 @@ import droidninja.filepicker.PickerManager
 import droidninja.filepicker.R
 import droidninja.filepicker.models.Media
 import droidninja.filepicker.utils.AndroidLifecycleUtils
+import droidninja.filepicker.utils.TimeUtils
 import droidninja.filepicker.views.SmoothCheckBox
 
 class PhotoGridAdapter(private val context: Context,
@@ -65,10 +67,14 @@ class PhotoGridAdapter(private val context: Context,
             }
 
 
-            if (media.mediaType == FilePickerConst.MEDIA_TYPE_VIDEO)
+            if (media.mediaType == FilePickerConst.MEDIA_TYPE_VIDEO) {
                 holder.videoIcon.visibility = View.VISIBLE
-            else
+                holder.videoDuration.visibility = View.VISIBLE
+                holder.videoDuration.text = media.duration?.let { TimeUtils.formatTime(it) }
+            } else {
+                holder.videoDuration.visibility = View.GONE
                 holder.videoIcon.visibility = View.GONE
+            }
 
             holder.itemView.setOnClickListener { onItemClicked(holder, media) }
 
@@ -143,11 +149,15 @@ class PhotoGridAdapter(private val context: Context,
 
         var selectBg: View
 
+        var videoDuration: TextView
+
         init {
             checkBox = itemView.findViewById<View>(R.id.checkbox) as SmoothCheckBox
             imageView = itemView.findViewById<View>(R.id.iv_photo) as ImageView
             videoIcon = itemView.findViewById<View>(R.id.video_icon) as ImageView
+            videoDuration = itemView.findViewById(R.id.video_duration) as TextView
             selectBg = itemView.findViewById(R.id.transparent_bg)
+
         }
     }
 
