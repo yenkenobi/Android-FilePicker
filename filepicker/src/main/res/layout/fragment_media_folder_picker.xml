@@ -18,4 +18,13 @@
         android:textSize="25sp"
         android:textStyle="bold"
         android:visibility="gone" />
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleLarge"
+        android:indeterminateTint="@color/colorFubPrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
 </RelativeLayout>

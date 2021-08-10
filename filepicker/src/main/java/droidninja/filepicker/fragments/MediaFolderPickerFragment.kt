@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.widget.ContentLoadingProgressBar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -36,6 +37,7 @@ class MediaFolderPickerFragment : BaseFragment(), FolderGridAdapter.FolderGridAd
 
     lateinit var emptyView: TextView
     lateinit var viewModel: VMMediaPicker
+    lateinit var progressBar: ContentLoadingProgressBar
 
     private var mListener: PhotoPickerFragmentListener? = null
     private var photoGridAdapter: FolderGridAdapter? = null
@@ -80,6 +82,7 @@ class MediaFolderPickerFragment : BaseFragment(), FolderGridAdapter.FolderGridAd
     private fun initView(view: View) {
         recyclerView = view.findViewById(R.id.recyclerview)
         emptyView = view.findViewById(R.id.empty_view)
+        progressBar = view.findViewById(R.id.progressBar)
         arguments?.let {
             fileType = it.getInt(BaseFragment.FILE_TYPE)
             imageFileSize = it.getInt(FilePickerConst.EXTRA_IMAGE_FILE_SIZE)
@@ -114,6 +117,8 @@ class MediaFolderPickerFragment : BaseFragment(), FolderGridAdapter.FolderGridAd
                 }
             })
 
+            progressBar.show()
+
             viewModel.lvPhotoDirsData.observe(viewLifecycleOwner, Observer { data ->
                 updateList(data)
             })
@@ -128,6 +133,7 @@ class MediaFolderPickerFragment : BaseFragment(), FolderGridAdapter.FolderGridAd
 
     private fun updateList(dirs: List<PhotoDirectory>) {
         view?.let {
+            progressBar.hide()
             if (dirs.isNotEmpty()) {
                 emptyView.visibility = View.GONE
                 recyclerView.visibility = View.VISIBLE
